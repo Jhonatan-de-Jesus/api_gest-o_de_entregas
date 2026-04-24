@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Flash Logística</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h1>🚚 Gestão de Entregas</h1>
+
+  <div class="container">
+
+    <h2>Nova Entrega</h2>
+    <input id="motorista" placeholder="ID do Motorista">
+    <input id="veiculo" placeholder="ID do Veículo">
+    <input id="destino" placeholder="Destino">
+    <button onclick="criar()">Criar Entrega</button>
+
+    <h2>Filtrar por Status</h2>
+    <select id="filtro">
+      <option value="">Todos</option>
+      <option value="pendente">Pendente</option>
+      <option value="em rota">Em Rota</option>
+      <option value="entregue">Entregue</option>
+    </select>
+    <button onclick="carregar()">Buscar</button>
+
+    <h2>Lista de Entregas</h2>
+    <ul id="lista"></ul>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <script>
+    const { createClient } = supabase;
+
+    const SUPABASE_URL = 'SUA_URL_SUPABASE_AQUI';
+    const SUPABASE_KEY = 'SUA_CHAVE_SUPABASE_AQUI';
+
+    const client = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function criar() {
+      const motorista_id = document.getElementById('motorista').value;
+      const veiculo_id = document.getElementById('veiculo').value;
+      const destino = document.getElementById('destino').value;
+
+      await client.from('entregas').insert({
+        motorista_id,
+        veiculo_id,
+        destino,
+        status: 'pendente'
+      });
+
+      carregar();
+    }
+
+    async function carregar() {
+      const status = document.getElementById('filtro').value;
+
+      let query = client.from('entregas').select('*');
+
+      if (status) {
+        query = query.eq('status', status);
+      }
+
+      const { data } = await query;
+
+      const lista = document.getElementById('lista');
+      lista.innerHTML = '';
+
+      data.forEach(e => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          #${e.id} - ${e.destino} (${e.status})
+          <button onclick="atualizar(${e.id})">➡️ Em rota</button>
+          <button onclick="deletar(${e.id})">❌</button>
+        `;
+        lista.appendChild(li);
+      });
+    }
+
+    async function atualizar(id) {
+      await client.from('entregas')
+        .update({ status: 'em rota' })
+        .eq('id', id);
+
+      carregar();
+    }
+
+    async function deletar(id) {
+      await client.from('entregas')
+        .delete()
+        .eq('id', id);
+
+      carregar();
+    }
+
+    carregar();
+  </script>
+
+</body>
+</html>
