@@ -60,3 +60,36 @@ async function cancelarEntrega(id) {
   if (error) throw new Error(`Erro ao cancelar entrega ${id}: ${error.message}`);
   return { success: true };
 }
+
+async function main() {
+  try {
+    console.log('--- CREATE ---');
+    const nova = await criarEntrega({
+      motorista_id: 1,
+      veiculo_id: 2,
+      destino: 'Av. Brasil, 1000 - Rio de Janeiro/RJ',
+    });
+    console.log('Entrega criada:', nova);
+
+    console.log('\n--- READ (todas) ---');
+    const todas = await listarEntregas();
+    console.log('Total de entregas:', todas.length);
+
+    console.log('\n--- READ (filtro: pendente) ---');
+    const pendentes = await listarEntregas('pendente');
+    console.log('Entregas pendentes:', pendentes);
+
+    console.log('\n--- UPDATE ---');
+    const atualizada = await atualizarStatus(nova.id, 'em rota');
+    console.log('Entrega atualizada:', atualizada);
+
+    console.log('\n--- DELETE ---');
+    const resultado = await cancelarEntrega(nova.id);
+    console.log('Entrega removida:', resultado);
+
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+
+main();
