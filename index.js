@@ -1,5 +1,5 @@
-const SUPABASE_URL = 'https://qkxdobhzmwfabalzzcpu.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_zVSvmGHwQar-3sZnskHWpQ_hsb7cjDY';
+const SUPABASE_URL = 'SUA_URL_SUPABASE_AQUI';
+const SUPABASE_KEY = 'SUA_CHAVE_SUPABASE_AQUI';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -36,5 +36,17 @@ async function listarEntregas(status = null) {
   const { data, error } = await query;
 
   if (error) throw new Error(`Erro ao listar entregas: ${error.message}`);
+  return data;
+}
+
+async function atualizarStatus(id, novoStatus) {
+  const { data, error } = await supabase
+    .from('entregas')
+    .update({ status: novoStatus })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw new Error(`Erro ao atualizar entrega ${id}: ${error.message}`);
   return data;
 }
