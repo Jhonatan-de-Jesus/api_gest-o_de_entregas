@@ -22,3 +22,19 @@ async function criarEntrega({ motorista_id, veiculo_id, destino, status = 'pende
 
   return data;
 }
+
+async function listarEntregas(status = null) {
+  let query = supabase
+    .from('entregas')
+    .select('*')
+    .order('id', { ascending: true });
+
+  if (status) {
+    query = query.eq('status', status);
+  }
+
+  const { data, error } = await query;
+
+  if (error) throw new Error(`Erro ao listar entregas: ${error.message}`);
+  return data;
+}
