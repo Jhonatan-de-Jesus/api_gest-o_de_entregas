@@ -1,53 +1,159 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY */
 body {
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: white;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #e2e8f0;
+}
+
+/* HEADER */
+header {
   text-align: center;
+  padding: 30px;
+  background: #020617;
+  border-bottom: 2px solid #38bdf8;
 }
 
-h1 {
-  margin-top: 20px;
+header h1 {
+  font-size: 2rem;
+  color: #38bdf8;
 }
 
-.container {
+header p {
+  color: #94a3b8;
+}
+
+/* DASHBOARD GRID */
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 30px;
+}
+
+/* CARD */
+.card {
   background: #1e293b;
   padding: 20px;
-  margin: 20px auto;
-  width: 400px;
-  border-radius: 10px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  transition: transform 0.2s;
 }
 
-input, select {
-  display: block;
-  margin: 10px auto;
-  padding: 8px;
-  width: 90%;
-  border-radius: 5px;
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card.full {
+  grid-column: span 2;
+}
+
+/* TITLES */
+.card h2 {
+  margin-bottom: 15px;
+  color: #38bdf8;
+}
+
+/* INPUTS */
+.form-group input,
+select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
   border: none;
+  background: #334155;
+  color: white;
 }
 
+/* BUTTONS */
 button {
-  padding: 8px 12px;
-  margin: 5px;
+  padding: 10px;
+  border-radius: 8px;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
-  background: #38bdf8;
-  color: black;
+  font-weight: bold;
 }
 
-button:hover {
+.btn-primary {
+  background: #22c55e;
+  color: #022c22;
+}
+
+.btn-primary:hover {
+  background: #16a34a;
+}
+
+.btn-secondary {
+  background: #38bdf8;
+  color: #020617;
+}
+
+.btn-secondary:hover {
   background: #0ea5e9;
 }
 
+/* LISTA */
 ul {
   list-style: none;
-  padding: 0;
 }
 
+/* ITEM */
 li {
   background: #334155;
-  margin: 10px;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* STATUS COLORS */
+.status {
+  font-weight: bold;
+}
+
+.pendente {
+  color: #facc15;
+}
+
+.em-rota {
+  color: #38bdf8;
+}
+
+.entregue {
+  color: #22c55e;
+}
+
+/* ACTION BUTTONS */
+.actions button {
+  margin-left: 5px;
+  padding: 6px 10px;
+}
+
+.btn-update {
+  background: #facc15;
+}
+
+.btn-delete {
+  background: #ef4444;
+  color: white;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .card.full {
+    grid-column: span 1;
+  }
 }
