@@ -50,3 +50,13 @@ async function atualizarStatus(id, novoStatus) {
   if (error) throw new Error(`Erro ao atualizar entrega ${id}: ${error.message}`);
   return data;
 }
+
+async function cancelarEntrega(id) {
+  const { error } = await supabase
+    .from('entregas')
+    .delete()
+    .eq('id', id);
+
+  if (error) throw new Error(`Erro ao cancelar entrega ${id}: ${error.message}`);
+  return { success: true };
+}
